@@ -22,7 +22,7 @@ v_b = v;
 sigma = 0.05;
 tau = 0.1;
 alpha0 = 0.1;
-alpha1 = 0.1;
+alpha1 = 0.05;
 p = zeros(size(u));
 q = zeros(size(v));
 while iter<Iter
