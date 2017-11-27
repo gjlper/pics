@@ -1,4 +1,4 @@
-function res = FFT3
+function res = FFT3()
 
 % Multi3D FFT
 % Inputs:
