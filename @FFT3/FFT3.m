@@ -1,11 +1,10 @@
-function res = FFT3()
+function res = FFT3(size)
 
 % Multi3D FFT
 % Inputs:
-%  
-%  Smap: kx, ky, kz, S, 1
-%  Mask: kx, ky, kz, 1, M
+%  size: img size
 res.adjoint = 0;
+res.size = size;
 res = class(res,'FFT3');
 
 
