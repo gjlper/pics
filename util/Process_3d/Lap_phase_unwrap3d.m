@@ -19,5 +19,6 @@ Lphase = cos(tphase).*ifft3c(tk2.*fft3c(sin(tphase)))...
     - sin(tphase).*ifft3c(tk2.*fft3c(cos(tphase)));
 
 uphase = ifft3c(fft3c(Lphase)./(tk2+eps));
+uphase = uphase-mean(uphase(:));
 uphase = reshape(uphase,msize);
 
