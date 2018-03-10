@@ -4,6 +4,10 @@ function imgf = Lap_filter3d(img)
 fsize = size(img);
 imgf = img(:,:,:,:);
 msize = size(imgf);
+if length(msize)<4
+    msize = [msize,1];
+end
+
 [yy,xx,zz]=meshgrid(1:msize(2),1:msize(1),1:msize(3));
 xx=round((xx-msize(1)/2-1))/msize(1);
 yy=round((yy-msize(2)/2-1))/msize(2);
