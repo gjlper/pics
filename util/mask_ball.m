@@ -16,8 +16,8 @@ az = (1:msize(3))-round((msize(3)+1)/2);
 
 if ~isempty(s_flag)
     if s_flag
-        % mask = exp(-sqrt(mx.^2+my.^2+mz.^2)/rsize);
-        mask = rsize ./ ((mx.^2+my.^2+mz.^2) + rsize.^2 + eps);
+        mask = exp(-sqrt(mx.^2+my.^2+mz.^2)*rsize);
+        % mask = rsize ./ ((mx.^2+my.^2+mz.^2) + rsize.^2 + eps);
     else
         mask = (sqrt(mx.^2+my.^2+mz.^2)<=rsize);
     end
