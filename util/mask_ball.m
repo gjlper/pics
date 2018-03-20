@@ -15,9 +15,11 @@ az = (1:msize(3))-round((msize(3)+1)/2);
 [my,mx,mz] = meshgrid(ay,ax,az);
 
 if ~isempty(s_flag)
-    if s_flag
+    if s_flag == 1
         mask = exp(-sqrt(mx.^2+my.^2+mz.^2)*rsize);
-        % mask = rsize ./ ((mx.^2+my.^2+mz.^2) + rsize.^2 + eps);
+        % 
+    elseif s_flag ==2
+        mask = rsize ./ ((mx.^2+my.^2+mz.^2) + rsize.^2 + eps);
     else
         mask = (sqrt(mx.^2+my.^2+mz.^2)<=rsize);
     end
