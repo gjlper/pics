@@ -22,6 +22,7 @@ if ~isempty(s_flag)
         mask = rsize ./ ((mx.^2+my.^2+mz.^2) + rsize.^2 + eps);
     else
         mask = (sqrt(mx.^2+my.^2+mz.^2)<=rsize);
+        mask = mask./sum(mask(:));
     end
 else
     mask = (sqrt(mx.^2+my.^2+mz.^2)<=rsize);
