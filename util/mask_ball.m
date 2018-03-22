@@ -21,7 +21,7 @@ if ~isempty(s_flag)
     elseif s_flag ==2
         mask = rsize ./ ((mx.^2+my.^2+mz.^2) + rsize.^2 + eps);
     else
-        mask = (sqrt(mx.^2+my.^2+mz.^2)<=rsize);
+        mask = min(max(rsize-(sqrt(mx.^2+my.^2+mz.^2)),0),1);
         mask = mask./sum(mask(:));
     end
 else
