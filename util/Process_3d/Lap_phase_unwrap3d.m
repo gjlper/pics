@@ -5,6 +5,7 @@ function uphase = Lap_phase_unwrap3d(phase)
 % output:
 %   unwrapped phase
 
+
 msize=size(phase);
 tphase = phase(:,:,:,:);
 t = size(tphase,4);
@@ -18,7 +19,8 @@ tk2 = repmat(k2,1,1,1,t);
 Lphase = cos(tphase).*ifft3c(tk2.*fft3c(sin(tphase)))...
     - sin(tphase).*ifft3c(tk2.*fft3c(cos(tphase)));
 
-uphase = real(ifft3c(fft3c(Lphase)./(tk2+eps)));
-uphase = uphase-mean(uphase(:));
+uphasek = fft3c(Lphase)./(tk2+eps);
+uphasek(floor(msize(1)/2+1),floor(msize(2)/2+1),floor(msize(3)/2+1),:) = 0;
+uphase = real(ifft3c(uphasek));
 uphase = reshape(uphase,msize);
 
