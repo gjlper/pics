@@ -117,7 +117,7 @@ void imfilter1D_double(double *I, int lengthI, double *H, int lengthH, double *J
     }
 }
 
-void imfilter2D_double(double *I, int * sizeI, double *H, int lengthH, double *J) {
+void imfilter2D_double(double *I, size_t * sizeI, double *H, int lengthH, double *J) {
     int y, x, i, y2;
     double *Irow, *Crow;
     int index=0, line=0;
@@ -186,7 +186,7 @@ void imfilter2D_double(double *I, int * sizeI, double *H, int lengthH, double *J
     free(RCache);
 }
 
-void GaussianFiltering2D_double(double *I, double *J, int *dimsI, double sigma, double kernel_size) {
+void GaussianFiltering2D_double(double *I, double *J, size_t *dimsI, double sigma, double kernel_size) {
     int kernel_length, i;
     double x, *H, totalH=0;
     
@@ -214,8 +214,8 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] ) {
     
     const mwSize *dimsY;
     const mwSize *dimsc;
-    int sizeY[3];
-    int sizeU[3];
+    size_t sizeY[3];
+    size_t sizeU[3];
     struct options Options;
     double temp;
     int field_num;

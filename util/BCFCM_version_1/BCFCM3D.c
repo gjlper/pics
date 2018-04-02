@@ -285,7 +285,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] ) {
  
     const mwSize *dimsY;
     size_t sizeY[3];
-	int sizeU[4];
+	size_t sizeU[4];
     struct options Options;
     int field_num;
     size_t i,j,k;
@@ -465,7 +465,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] ) {
 
     if( nlhs>1)
 	{
-		sizeU[0]=(int)sizeY[0]; sizeU[1]=(int)sizeY[1]; sizeU[2]=(int)sizeY[2]; sizeU[3]=(int)c;
+		sizeU[0]=sizeY[0]; sizeU[1]=sizeY[1]; sizeU[2]=sizeY[2]; sizeU[3]=c;
 		plhs[1] = mxCreateNumericArray(4, sizeU, mxSINGLE_CLASS, mxREAL);
 		Uout = (float*)mxGetData(plhs[1]);
 		j=0; for(k=0; k<N; k++) { for(i=0;i<c;i++) { Uout[i*N+k]=U[j]; j++; } }
