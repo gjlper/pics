@@ -22,5 +22,11 @@ Lphase = cos(tphase).*ifft3c(tk2.*fft3c(sin(tphase)))...
 uphasek = fft3c(Lphase)./(tk2+eps);
 uphasek(floor(msize(1)/2+1),floor(msize(2)/2+1),floor(msize(3)/2+1),:) = 0;
 uphase = real(ifft3c(uphasek));
+% iterative update
+Iter = 4;
+uphase_j = phase;
+for i = 1:Iter
+    uphase_j = uphase_j + 2*pi*round((uphase - uphase_j)/(2*pi));
+end
 uphase = reshape(uphase,msize);
 
