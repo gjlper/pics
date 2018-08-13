@@ -32,10 +32,10 @@ while iter<Iter
     q = prox_linf2(q+sigma*(pgradient(v_b,5)),alpha1,[4,5]);
     % primal update
     u_o = u;
-    u = (lambda*(u + div4(p)) + tau*I_in)/(lambda+tau);
+    u = (lambda*(u + tau*div4(p)) + tau*I_in)/(lambda+tau);
     u_b = u + (u - u_o);
     v_o = v;
-    v = v + (p + div5(q));
+    v = v + tau*(p + div5(q));
     v_b = v + (v - v_o);
     
 end
