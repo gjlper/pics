@@ -14,4 +14,4 @@ rsize = size(x);
 nsize = rsize;
 nsize(dim) = 1;
 x_norm = repmat(x_norm,rsize./nsize);
-y = x./abs(x_norm+eps).*min(abs(x_norm),lambda);
+y = lambda * x./max(abs(x_norm),lambda+eps);
