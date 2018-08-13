@@ -19,7 +19,7 @@ vz = ((1:Isize(3))-round((Isize(3)+1)/2))/size(Isize(3),1);
 [ky,kx,kz] = meshgrid(vy,vx,vz);
 dip1 = 1/3-(kx.^2*H(1)+ky.^2*H(2)+kz.^2*H(3))./(kx.^2+ky.^2+kz.^2+eps);
 
-if ~strcmp(type,'continuous')
+if strcmp(type,'discrete')
     kx2 = 1 - cos(2*pi*kx);
     ky2 = 1 - cos(2*pi*ky);
     kz2 = 1 - cos(2*pi*kz);
