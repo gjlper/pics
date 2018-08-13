@@ -1,20 +1,18 @@
 function res = mtimes(a,b)
 
 s_b = reshape(b,a.size);
-s_b = s_b(:,:,:,:);
-nP = size(s_b,4);
 if a.adjoint
     % inverse
     s_b = ifftshift(s_b);
-    for np = 1:nP
-        s_b(:,:,:,np) = ifftn(s_b(:,:,:,np));
+    for dim = 1:3
+        s_b = ifft(s_b,[],dim);
     end
     res = fftshift(s_b);
 else
-    % forward
+    % inverse
     s_b = ifftshift(s_b);
-    for np = 1:nP
-        s_b(:,:,:,np) = fftn(s_b(:,:,:,np));
+    for dim = 1:3
+        s_b = fft(s_b,[],dim);
     end
     res = fftshift(s_b);
 end
