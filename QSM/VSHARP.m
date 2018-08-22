@@ -2,7 +2,7 @@ function [t_phase, t_mask, bkg_phase] = VSHARP(rawphase,tmask,level)
 % multi-level background phase removal
 % xucheng zhu
 if nargin <3
-    level = 5;
+    level = 8;
 end
 
 t_phase = zeros(size(rawphase));

@@ -31,3 +31,4 @@ end
 
 
 kernel_dip = ratio*dip1+(1-ratio)*dip2;
+kernel_dip(round((Isize(1)+1)/2),round((Isize(2)+1)/2),round((Isize(3)+1)/2)) = 0;
