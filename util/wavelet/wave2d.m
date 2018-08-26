@@ -2,7 +2,7 @@ function wave = wave2d(arr2d, N, basename)
 % complex wavelet 
 
 if nargin<2
-    N = 3;
+    N = 4;
 end
 if nargin<3
     basename = 'db4';
