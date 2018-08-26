@@ -25,6 +25,6 @@ mag_n = (log(mag+eps)-Dmin)/(Dmax-Dmin+eps);
 v = [0 1 max(mag_n(:))];
 % radius = 20;
 [compB,~]=BCFCM3D(single(mag_n),v,struct('maxit',20,'epsilon',1e-6,'sigma',radius)); 
-bias_field = exp(-compB*(Dmax-Dmin));
+bias_field = exp(compB*(Dmax-Dmin));
 bias_field = max(bias_field./mean(bias_field(:)),5e-2);
 Ic = I./bias_field;
