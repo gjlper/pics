@@ -2,6 +2,7 @@
 % QSM solver
 % 
 
+addpath(genpath('../../pics'));
 
 I = squeeze(readcfl_s('../../Vo004r0e4_mr'));
 Rt = I(:,:,:,4,2)./(I(:,:,:,1,2)+eps);
