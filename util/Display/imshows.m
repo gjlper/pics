@@ -13,6 +13,9 @@ Img_s = Img_s(:,:,:);
 % matlab order
 Img_s = flip(flip(permute(Img_s,[2 1 3]),1),2);
 Isize_s = size(Img_s);
+if numel(Isize_s)<3
+    Isize_s = [Isize_s,1];
+end
 
 if nargin < 2
     range = zeros(1,2);
