@@ -3,10 +3,11 @@
 % 
 
 
-I = readcfl_s('../../UTE_denoise5');
-It = I(:,:,:,3);
+I = squeeze(readcfl_s('../../Vo004r0e4_mr'));
+Rt = I(:,:,:,4,2)./(I(:,:,:,1,2)+eps);
+It = Rt.*abs(I(:,:,:,1,2)+eps);
 It = TGV_denoise(It, 20, 5e-2);
-TE = 100e-6;
+TE = 600e-6;
 H = [0,0,1];
 B0 = 3;
 gyro = 42.58;% 3T proton
