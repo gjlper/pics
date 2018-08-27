@@ -5,9 +5,16 @@
 addpath(genpath('../../pics'));
 
 I = squeeze(readcfl_s('../../Vo004r0e4_mr'));
-Rt = I(:,:,:,4,2)./(I(:,:,:,1,2)+eps);
-It = Rt.*abs(I(:,:,:,1,2)+eps);
-It = TGV_denoise(It, 20, 5e-2);
+I = I./max(abs(I(:)));
+Ie1 = zeros(size(I(:,:,:,:,1)));
+Ie3 = zeros(size(I(:,:,:,:,1)));
+for i = 3
+    Ie1(:,:,:,i) = TGV_denoise(I(:,:,:,i,1), 20, 5e-3);
+    Ie3(:,:,:,i) = TGV_denoise(I(:,:,:,i,3), 20, 5e-3);
+end
+Rt = Ie3(:,:,:,3)./(Ie1(:,:,:,3)+eps);
+It = Rt.*abs(Ie1(:,:,:,3)+eps);
+% It = TGV_denoise(It, 20, 5e-2);
 TE = 600e-6;
 H = [0,0,1];
 B0 = 3;
@@ -15,7 +22,7 @@ gyro = 42.58;% 3T proton
 
 phase = angle(It);
 mag_sq = sqrt(abs(It)./max(abs(It(:))));
-tmask = tissue_mask(I(:,:,:,1));
+tmask = tissue_mask(I(:,:,:,3,1),0);
 weight = tmask.*mag_sq;
 weight2 = tmask.*mag_sq.^2;
 Tissue_Phase = VSHARP(phase,tmask,12);
