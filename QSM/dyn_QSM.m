@@ -15,7 +15,7 @@ dTE = .25;
 TE = dTE * (necho-1);
 phase = angle(I(:,:,:,:,end)./(I(:,:,:,:,1)+eps)).*tmask;
 
-[~, Tissue_Mask, bkg_phase] = VSHARP(phase,tmask,12);
+[~, Tissue_Mask, bkg_phase] = VSHARP(phase(:,:,:,3),tmask,12);
 Tissue_Phase = angle(I(:,:,:,:,end)./exp(1i*bkg_phase));
 
 % Motion resolved processing

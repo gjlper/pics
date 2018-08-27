@@ -11,7 +11,7 @@ end
 
 Isize = size(Tissue_Phase);
 d_k = calc_dipole(Isize,H,'discrete');
-
+gyro = 42;
 constant = gyro*TE*B0;
 rho = 1e-2;
 params.lambda = .1;% tuning
