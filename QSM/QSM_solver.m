@@ -1,5 +1,16 @@
-function x_map = QSM_solver(Tissue_Phase, Tissue_mask, TE, B0, weight2, H)
+function x_map = QSM_solver(Tissue_Phase, Tissue_Mask, TE, B0, weight2, H)
 % simple qsm solver with TGV constraint
+% Input:
+%   Tissue_Phase : phase after background removal [nx,ny,nz]
+%   Tissue_Mask : soft tissue mask [nx,ny,nz]
+%   TE : echo time (TODO: multi echo solver)
+%   B0 : main field
+%   weight2 : L2 norm weighting, (default 1)
+%   H  : main field direction, (deault [0,0,1])
+% Output:
+%   x_map : qsm
+%   
+% Xucheng Zhu, August, 2018
 
 if nargin < 5
     weight2 = 1;
@@ -35,7 +46,7 @@ x_k1 = x_k0;
 for i = 1:niter
     % L2 optimization TODO: conjugate gradient descent
     cg_iterM = 8;
-    b = (constant*(FT'*(d_k(:).*(FT*(weight2(:).*Tissue_Phase(:))))) + rho * (z_k0(:)-u_k0(:))) .* Tissue_mask(:);
+    b = (constant*(FT'*(d_k(:).*(FT*(weight2(:).*Tissue_Phase(:))))) + rho * (z_k0(:)-u_k0(:))) .* Tissue_Mask(:);
     % x_k1(:)= lsqr(A,b,tol,cg_iterM,[],[],x_k0(:));    
     % cg update
     x_k1(:) = cg_update2(A,b,x_k0(:),cg_iterM);

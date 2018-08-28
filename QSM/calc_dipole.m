@@ -1,5 +1,6 @@
 function kernel_dip = calc_dipole(Isize,H,type,ratio)
 % modified dipole kernel for discrete operator, and noise amplification
+% Xucheng Zhu, July 2018
 
 if nargin<2
     H = [0,0,1];
