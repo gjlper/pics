@@ -3,5 +3,5 @@ function y = div4(x)
 y=0;
 for i = 1:3
     % y = y + (circshift(x(:,:,:,i),1,i) - circshift(x(:,:,:,i),-1,i))/2;
-    y = y + (circshift(x(:,:,:,i),-1,i)-x(:,:,:,i));
+    y = y - (circshift(x(:,:,:,i),-1,i)-x(:,:,:,i));
 end 

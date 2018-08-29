@@ -21,7 +21,7 @@ alpha1 = a.params.alpha1;%.05
 p = zeros([size(b_n),3]);
 q = zeros([size(v),3]);
 % interation??
-Iter = 5;
+Iter = 15;
 for i = 1:Iter
     % dual update
     p = prox_linf2(p+sigma*(pgradient(u_b,4)-v_b),alpha0,4);
