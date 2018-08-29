@@ -26,8 +26,8 @@ gyro = 42;
 constant = gyro*TE*B0;
 rho = 1e-2;
 params.lambda = .1;% tuning
-params.sigma = .1;
-params.tau = .1;
+params.sigma = .5;% sigma * tau <= .5
+params.tau = .5;
 params.alpha0 = .1;
 params.alpha1 = .1;
 params.nflag = 1;
