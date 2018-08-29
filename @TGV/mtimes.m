@@ -9,7 +9,8 @@ else
     b_scale = 1;
 end
 
-u_b = b_n;
+u = b_n;
+u_b = u;
 v = pgradient(b_n,4);
 v_b = v;
 lambda = a.params.lambda;%0.02
