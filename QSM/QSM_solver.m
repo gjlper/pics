@@ -33,7 +33,7 @@ params.sigma = .25;% sigma * tau <= .5
 params.tau = .25;
 params.alpha0 = .05;
 params.alpha1 = .01;
-params.nflag = 0;
+params.nflag = 1;
 TGV_prox = TGV(params);
 niter = 10;
 
