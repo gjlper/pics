@@ -13,9 +13,9 @@ if nargin<4
 end
 
 
-vx = ((1:Isize(1))-round((Isize(1)+1)/2))/size(Isize(1),1);
-vy = ((1:Isize(2))-round((Isize(2)+1)/2))/size(Isize(2),1);
-vz = ((1:Isize(3))-round((Isize(3)+1)/2))/size(Isize(3),1);
+vx = ((1:Isize(1))-round((Isize(1)+1)/2))/Isize(1);
+vy = ((1:Isize(2))-round((Isize(2)+1)/2))/Isize(2);
+vz = ((1:Isize(3))-round((Isize(3)+1)/2))/Isize(3);
 
 [ky,kx,kz] = meshgrid(vy,vx,vz);
 dip1 = 1/3-(kx.^2*H(1)+ky.^2*H(2)+kz.^2*H(3))./(kx.^2+ky.^2+kz.^2+eps);

@@ -53,9 +53,9 @@ for i = 1:niter
     cg_iterM = 15;
     b = (b0 + rho * (z_k0(:)-u_k0(:))) .* Tissue_Mask(:);
     tol = 1e-7;
-    x_k1(:)= lsqr(A,b,tol,cg_iterM,[],[],x_k0(:));    
+    % x_k1(:)= lsqr(A,b,tol,cg_iterM,[],[],x_k0(:));    
     % cg update
-    % x_k1(:) = cg_update2(A,b,x_k0(:),cg_iterM);
+    x_k1(:) = cg_update2(A,b,x_k0(:),cg_iterM);
     tol_x = update_rate(x_k0,x_k1);
     fprintf('Relative residual: %f\n', tol_x); 
     % TV prox
