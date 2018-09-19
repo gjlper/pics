@@ -1,4 +1,4 @@
-function x_map = QSM_solver(Tissue_Phase, Tissue_Mask, TE, B0, weight2, H, res)
+function x_map = QSM_solver_bk(Tissue_Phase, Tissue_Mask, TE, B0, weight2, H, res)
 % simple qsm solver with TGV constraint
 % Input:
 %   Tissue_Phase : phase after background removal [nx,ny,nz]
@@ -21,6 +21,7 @@ end
 if nargin < 7
     res = [1,1,1];
 end
+
 % threshold for weighting, TODO R2* based weight
 weight2 = weight2./max(weight2(:));
 weight2 = max(weight2,.05);
@@ -29,42 +30,37 @@ weight2 = weight2.*Tissue_Mask;
 
 Isize = size(Tissue_Phase);
 d_k = calc_dipole(Isize,H,'discrete',0,res);
-Conv_k = conv3d2(Isize,d_k,40);
 gyro = 42;
 constant = gyro*TE*B0;
-rho = 1;
-params.lambda = .01/rho;% tuning
+rho = .1;
+params.lambda = .005;% tuning
 params.sigma = .25;% sigma * tau <= .5
 params.tau = .25;
 params.alpha0 = .05;
-params.alpha1 = .05;
+params.alpha1 = .01;
 params.nflag = 1;
 TGV_prox = TGV(params);
-niter = 20;
+niter = 10;
 
-% calc (ATA+rhoI) inversion
-A = @(x,flag)(constant^2*(Conv_k*(weight2(:).*(Conv_k*x))) + rho*x); % TODO weighting
-b0 = (constant*(Conv_k*(weight2(:).*Tissue_Phase(:))));
-delta_func = ifft3c(ones(Isize));
-ATA_s = ones(Isize);
-ATA_s(:) = constant^2*(Conv_k'*(weight2(:).*(Conv_k*delta_func)));
-InvA_k = 1./(fft3c(ATA_s) + rho);
-InvA = conv3d2(Isize,InvA_k,60);
+FT = FFT3(Isize);% TODO simplify fft operator
 
-x_k0 = -Tissue_Phase/constant;
-z_k0 = -Tissue_Phase/constant;
+A = @(x,flag)(constant^2*(FT'*(d_k(:).*(FT*(weight2(:).*(FT'*(d_k(:).*(FT*x))))))) + rho*x).*Tissue_Mask(:); % TODO weighting
+b0 = (constant*(FT'*(d_k(:).*(FT*(weight2(:).*Tissue_Phase(:)))))).*Tissue_Mask(:) ;
+
+
+x_k0 = Tissue_Phase/constant;
+z_k0 = zeros(Isize);
 u_k0 = zeros(Isize);
 x_k1 = x_k0;
 
 for i = 1:niter
     % L2 optimization TODO: conjugate gradient descent
-    %cg_iterM = 10;
-    b = (b0 + rho * (z_k0(:)-u_k0(:)));
+    cg_iterM = 15;
+    b = (b0 + rho * (z_k0(:)-u_k0(:))) .* Tissue_Mask(:);
     tol = 1e-10;
-    % x_k1(:)= lsqr(A,b,tol,cg_iterM,[],[],x_k0(:));    
+    x_k1(:)= lsqr(A,b,tol,cg_iterM,[],[],x_k0(:));    
     % cg update
-    %x_k1(:) = cg_update2(A,b,x_k0(:),cg_iterM);
-    x_k1(:) = (InvA*b).*Tissue_Mask(:);
+    % x_k1(:) = cg_update2(A,b,x_k0(:),cg_iterM);
     tol_x = update_rate(x_k0,x_k1);
     fprintf('Relative residual: %f\n', tol_x); 
     % TV prox

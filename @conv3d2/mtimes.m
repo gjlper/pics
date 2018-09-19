@@ -2,7 +2,7 @@ function res = mtimes(a,b)
 
 s_b = reshape(b,a.I_size);
 % padding
-s_b = padarray(s_b,a.padding_size);
+s_b = pad3d(s_b,a.conv_size);
 
 if a.adjoint
     % inverse
@@ -15,6 +15,12 @@ else
     s_bkf = s_bk .* a.kernel_ft;
     res = ifft3c(s_bkf);
 end
+res = crop3d(res,a.I_size);
 if a.vec_flag
     res = res(:);
 end
+
+end
+
+
+
