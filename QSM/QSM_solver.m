@@ -1,4 +1,4 @@
-function x_map = QSM_solver(Tissue_Phase, Tissue_Mask, TE, B0, niter, weight2, H, res)
+function x_map = QSM_solver(Tissue_Phase, Tissue_Mask, TE, B0, lambda, niter, weight2, H, res, radius_dip)
 % simple qsm solver with TGV constraint
 % Input:
 %   Tissue_Phase : phase after background removal [nx,ny,nz]
@@ -11,7 +11,7 @@ function x_map = QSM_solver(Tissue_Phase, Tissue_Mask, TE, B0, niter, weight2, H
 %   x_map : qsm
 %   
 % Xucheng Zhu, August, 2018
-Nin = 4;
+Nin = 5;
 if nargin < Nin+1
     niter = 20;
 end
@@ -24,19 +24,23 @@ end
 if nargin < Nin+4
     res = [1,1,1];
 end
+if nargin < Nin+5
+    radius_dip = 20;
+end
+
 % threshold for weighting, TODO R2* based weight
 weight2 = weight2./max(weight2(:));
 weight2 = max(weight2,.05);
-weight = 1./sqrt(weight2);
 weight2 = weight2.*Tissue_Mask;
+weight =weight2.^2;
 
 Isize = size(Tissue_Phase);
-d_k = calc_dipole2(Isize,H,'discrete',0,res,60);
+d_k = calc_dipole2(Isize,H,'discrete',0,res,radius_dip);
 Conv_k = conv3d2(Isize,d_k,40);
 gyro = 42;
 constant = gyro*TE*B0;
 rho = 1;
-params.lambda = .01/rho;% tuning
+params.lambda = lambda/rho;% tuning 0.01
 params.sigma = .25;% sigma * tau <= .5
 params.tau = .25;
 params.alpha0 = .05;
@@ -45,7 +49,7 @@ params.nflag = 1;
 TGV_prox = TGV(params);
 
 % calc (ATA+rhoI) inversion
-A = @(x,flag)((Conv_k*(weight2(:).*(Conv_k*x))) + rho*x); % TODO weighting
+A = @(x,flag)((Conv_k*(weight(:).*(Conv_k*x))) + rho*x); % TODO weighting
 b0 = ((Conv_k*(weight2(:).*Tissue_Phase(:))));
 delta_func = ifft3c(ones(Isize));
 ATA_s = ones(Isize);
@@ -61,7 +65,7 @@ x_k1 = x_k0;
 
 for i = 1:niter
     % L2 optimization TODO: conjugate gradient descent
-    cg_iterM = 10;
+    cg_iterM = 15;
     b = (b0 + rho * (z_k0(:)-u_k0(:)));
     tol = 1e-10;
     x_k1(:)= lsqr(A,b,tol,cg_iterM,[],[],x_k0(:));    
@@ -72,12 +76,11 @@ for i = 1:niter
     fprintf('Relative residual: %f\n', tol_x); 
     % TV prox
     % weight
-    z_k1 = TGV_prox*(weight.*(x_k1+u_k0).*Tissue_Mask);% edge problem
-    z_k1 = z_k1./weight;
+    z_k1 = TGV_prox*((x_k1+u_k0)).*Tissue_Mask;% edge problem
     
     u_k0 = u_k0 + (x_k1 -z_k1);
     x_k0 = x_k1;
     z_k0 = z_k1;
 end
 
-x_map = x_k0/constant;
+x_map = x_k0/constant.*Tissue_Mask;
