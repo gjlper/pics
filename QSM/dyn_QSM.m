@@ -1,7 +1,7 @@
 % dyn_QSM
-addpath(genpath('../../pics'));
+addpath(genpath('/working/larson6/xzhu2/tools/pics'));
 % load multi-echo data
-I = squeeze(readcfl_s('../../Vo004r0e4_mr'));
+I = squeeze(readcfl_s('/working/larson6/xzhu2/tmp/tmp/Vo004r0e4_mr'));
 I = I./max(abs(I(:)));
 Isize = size(I);
 nstate = Isize(4);

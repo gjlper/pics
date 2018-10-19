@@ -18,4 +18,6 @@ else
     end
     res = fftshift(s_b);
 end
-res = res(:);
+if a.vec_flag
+    res = res(:);
+end
