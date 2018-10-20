@@ -7,7 +7,8 @@ function export_raw(name,I, comment)
 
 fname = [name,'.dat'];
 fid = fopen(fname,'w');
-fwrite(fid,single(I));
+I_u = single(I-min(I(:)));
+fwrite(fid,I_u,'single');
 fclose(fid);
 
 Isize = size(I);
